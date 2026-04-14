@@ -1,12 +1,12 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Layers, PlusCircle, Folder, PencilLine, Trash2, ChevronLeft } from 'lucide-react';
+import { Layers, PlusCircle, Folder, PencilLine, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/use-auth';
 import { useAppStore } from '@/store/use-app-store';
 import { subscribeToSections, deleteSection } from '@/services/firestore';
+import { isFirebaseConfigured } from '@/lib/firebase';
 import { cn } from '@/lib/utils';
 import type { Section } from '@/types';
 
@@ -134,8 +134,22 @@ export function Sidebar() {
         )}
       </nav>
 
-      <div className="p-4 border-t bg-gray-50/50 text-[10px] text-gray-400 text-center uppercase tracking-widest font-bold">
-        Built for Productivity
+      <div className="p-4 border-t bg-gray-50/50 flex flex-col items-center gap-2">
+        <div className="text-[10px] text-gray-400 text-center uppercase tracking-widest font-bold">
+          Built for Productivity
+        </div>
+        <div className={cn(
+          "px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm border",
+          isFirebaseConfigured 
+            ? "bg-emerald-50 text-emerald-700 border-emerald-100" 
+            : "bg-amber-50 text-amber-700 border-amber-100"
+        )}>
+          <span className={cn(
+            "h-1.5 w-1.5 rounded-full animate-pulse", 
+            isFirebaseConfigured ? "bg-emerald-500" : "bg-amber-500"
+          )} />
+          <span>Storage: {isFirebaseConfigured ? 'Firebase Cloud' : 'Local Storage'}</span>
+        </div>
       </div>
     </aside>
   );
